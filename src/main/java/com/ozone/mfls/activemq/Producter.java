@@ -21,7 +21,13 @@ public class Producter {
     //事务管理
     Session session;
     ThreadLocal<MessageProducer> threadLocal = new ThreadLocal<>();
-
+    /**
+     * @Author Ozone
+     * @Description //TODO 
+     * @Date 22:23 2019/5/20 0020
+     * @Param []
+     * @return void
+     **/
     public void init(){
         try {
             //创建一个链接工厂

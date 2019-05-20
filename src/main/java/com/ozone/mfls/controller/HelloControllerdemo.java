@@ -17,7 +17,13 @@ public class HelloControllerdemo {
     private Logger logger = Logger.getLogger(HelloControllerdemo.class);
     @Autowired
     UserServer userServer;
-
+    /**
+     * @Author Ozone
+     * @Description 查询所有用户
+     * @Date 22:24 2019/5/20 0020
+     * @Param []
+     * @return java.util.List<com.ozone.mfls.beans.SA_USERS>
+     **/
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
     public List<SA_USERS> Hello(){
         List<SA_USERS> saUsers = userServer.getAll();
