@@ -49,7 +49,7 @@ public class ConcurrentTest {
         public void post(){
             String result = "";
             System.out.println("模拟用户： "+workerName+" 开始发送模拟请求  at "+sdf.format(new Date()));
-            result = HttpServiceUtil.insureResponsePost("http://localhost:8080/Settlement/wallet/walleroptimisticlock.action", "openId="+openId+"&openType="+openType+"&amount="+amount);
+            result = HttpServiceUtil.insureResponsePost("http://localhost:8080/Settlement/wallet/walleroptimisticlock", "openId="+openId+"&openType="+openType+"&amount="+amount);
             System.out.println("操作结果："+result);
             System.out.println("模拟用户： "+workerName+" 模拟请求结束  at "+sdf.format(new Date()));
         }

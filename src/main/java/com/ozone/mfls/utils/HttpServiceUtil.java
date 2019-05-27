@@ -7,7 +7,13 @@ import java.io.PrintWriter;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+/**
+ * @ClassName HttpServiceUtil
+ * @Description http工具类
+ * @Author Ozone
+ * @Date 2019/5/26 0026 16:17
+ * @Version 1.0
+ **/
 public class HttpServiceUtil {
 
 

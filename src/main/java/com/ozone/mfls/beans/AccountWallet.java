@@ -1,11 +1,15 @@
 package com.ozone.mfls.beans;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Objects;
 
-
+/**
+ * @ClassName AccountWallet
+ * @Description 钱包账户bean
+ * @Author Ozone
+ * @Date 2019/5/26 0026 16:17
+ * @Version 1.0
+ **/
 public class AccountWallet {
     private int id;
     private String userOpenId;
@@ -98,24 +102,4 @@ public class AccountWallet {
         this.version = version;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AccountWallet that = (AccountWallet) o;
-        return id == that.id &&
-                Objects.equals(userOpenId, that.userOpenId) &&
-                Objects.equals(userAmount, that.userAmount) &&
-                Objects.equals(createTime, that.createTime) &&
-                Objects.equals(updateTime, that.updateTime) &&
-                Objects.equals(payPassword, that.payPassword) &&
-                Objects.equals(isOpen, that.isOpen) &&
-                Objects.equals(checkKey, that.checkKey) &&
-                Objects.equals(version, that.version);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userOpenId, userAmount, createTime, updateTime, payPassword, isOpen, checkKey, version);
-    }
 }

@@ -9,13 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class AccountWalletService {
-    private AccountWalletMapper  accountWalletMapper;
-
     @Autowired
-    public AccountWalletService(AccountWalletMapper accountWalletMapper) {
-        this.accountWalletMapper = accountWalletMapper;
-    }
-
+    private AccountWalletMapper  accountWalletMapper;
     public AccountWallet selectByOpenId(String openId) {
         return accountWalletMapper.selectByOpenId(openId);
     }

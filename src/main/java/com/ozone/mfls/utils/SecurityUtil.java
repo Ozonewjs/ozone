@@ -24,7 +24,7 @@ public class SecurityUtil {
 
         UserDetails user = userDetailsService.loadUserByUsername(username);
         if (user == null) {
-            throw new IllegalStateException("User " + username + " doesn't exist, please provide a valid user");
+            throw new IllegalStateException("user " + username + " doesn't exist, please provide a valid user");
         }
         logger.info("> Logged in as: " + username);
         SecurityContextHolder.setContext(new SecurityContextImpl(new Authentication() {

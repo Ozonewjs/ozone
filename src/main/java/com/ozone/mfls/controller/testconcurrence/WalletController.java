@@ -11,7 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-
+/**
+ * @ClassName WalletController
+ * @Description 钱包账户操作
+ * @Author Ozone
+ * @Date 2019/5/26 0026 16:17
+ * @Version 1.0
+ **/
 @RestController
 public class WalletController {
     private Logger logger = Logger.getLogger(WalletController.class);
@@ -23,14 +29,18 @@ public class WalletController {
         String result = "";
 
         try {
+            /* 用户唯一编号*/
             String openId = request.getParameter("openId") == null ? null
-                    : request.getParameter("openId").trim(); // 用户唯一编号
+                    : request.getParameter("openId").trim();
+            /* 1:代表增加，2：代表减少*/
             String openType = request.getParameter("openType") == null ? null
-                    : request.getParameter("openType").trim(); // 1:代表增加，2：代表减少
+                    : request.getParameter("openType").trim();
+            /* 金额*/
             String amount = request.getParameter("amount") == null ? null
-                    : request.getParameter("amount").trim(); // 金额
+                    : request.getParameter("amount").trim();
 
             if (StringUtils.isEmpty(openId)) {
+                logger.info("openId为空");
                 return "openId is null";
             }
             if (StringUtils.isEmpty(openType)) {
