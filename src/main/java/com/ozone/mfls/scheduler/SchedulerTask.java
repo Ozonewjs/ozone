@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
  **/
 @Component
 public class SchedulerTask {
-    @Scheduled(cron="0/5 * *  * * ? ") //每5秒执行一次
+    @Scheduled(cron="0 0 1 * * ? ") //每天凌晨1点
     private void process(){
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println(sdf.format(DateTime.now().toDate())+"*********B任务每5秒执行一次进入测试");

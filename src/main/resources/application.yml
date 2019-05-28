@@ -1,8 +1,10 @@
 
 server:
-  port: 8089
+  port: 8099
   servlet:
     context-path: /demo
+
+
 #数据源
 spring:
   datasource:
@@ -27,6 +29,10 @@ spring:
     pool:
       enabled: true
       max-connections: 10
+
+  redis:
+    port: 6379
+    host: localhost
 
 #配置mybatis
 mybatis:

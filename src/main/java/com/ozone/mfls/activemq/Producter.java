@@ -5,25 +5,32 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 import java.util.concurrent.atomic.AtomicInteger;
+/**
+ * @Author Ozone
+ * @Description 消息生产者
+ * @Date 2019/5/24 10:37
+ **/
 public class Producter {
-    //ActiveMq 的默认用户名
+    /**
+     * ActiveMq 的默认用户名
+     **/
     private static final String USERNAME = ActiveMQConnection.DEFAULT_USER;
-    //ActiveMq 的默认登录密码
+    /**ActiveMq 的默认登录密码**/
     private static final String PASSWORD = ActiveMQConnection.DEFAULT_PASSWORD;
-    //ActiveMQ 的链接地址
+    /**ActiveMQ 的链接地址**/
     private static final String BROKEN_URL = ActiveMQConnection.DEFAULT_BROKER_URL;
 
     AtomicInteger count = new AtomicInteger(0);
-    //链接工厂
+    /**链接工厂**/
     ConnectionFactory connectionFactory;
-    //链接对象
+    /**链接对象**/
     Connection connection;
-    //事务管理
+    /**事务管理**/
     Session session;
     ThreadLocal<MessageProducer> threadLocal = new ThreadLocal<>();
     /**
      * @Author Ozone
-     * @Description //TODO 
+     * @Description 初始化链接
      * @Date 22:23 2019/5/20 0020
      * @Param []
      * @return void
@@ -68,9 +75,7 @@ public class Producter {
                 //提交事务
                 session.commit();
             }
-        } catch (JMSException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (JMSException  | InterruptedException e) {
             e.printStackTrace();
         }
     }
