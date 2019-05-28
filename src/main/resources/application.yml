@@ -29,6 +29,9 @@ spring:
     pool:
       enabled: true
       max-connections: 10
+  security:
+    user:
+      password: 123456
 
   redis:
     port: 6379
