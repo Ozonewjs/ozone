@@ -22,10 +22,14 @@ import java.util.concurrent.locks.Lock;
 @RestController
 public class HelloControllerdemo {
     private Logger logger = Logger.getLogger(HelloControllerdemo.class);
-    @Autowired
-    UserServer userServer;
-    @Autowired
+    private UserServer userServer;
     private RedisLockRegistry redisLockRegistry;
+    @Autowired
+    public HelloControllerdemo(UserServer userServer, RedisLockRegistry redisLockRegistry) {
+        this.userServer = userServer;
+        this.redisLockRegistry = redisLockRegistry;
+    }
+
     /**
      * @Author Ozone
      * @Description 查询所有用户

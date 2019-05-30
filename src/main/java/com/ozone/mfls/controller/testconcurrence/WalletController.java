@@ -13,22 +13,21 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 /**
  * @ClassName WalletController
-<<<<<<< Updated upstream
  * @Description 钱包账户操作
  * @Author Ozone
  * @Date 2019/5/26 0026 16:17
-=======
- * @Author Ozone
- * @Description
- * @Date 2019/5/27 15:36
->>>>>>> Stashed changes
  * @Version 1.0
  **/
 @RestController
 public class WalletController {
     private Logger logger = Logger.getLogger(WalletController.class);
-    @Autowired
+
     private AccountWalletService accountWalletService;
+    @Autowired
+    public WalletController(AccountWalletService accountWalletService) {
+        this.accountWalletService = accountWalletService;
+    }
+
     @RequestMapping(value = "/walleroptimisticlock", method = RequestMethod.POST)
     public String walleroptimisticlock(HttpServletRequest request) {
 

@@ -2,8 +2,10 @@ package com.ozone.mfls;
 
 
 
+import com.ozone.mfls.beans.Book;
 import org.mybatis.spring.annotation.MapperScan;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
