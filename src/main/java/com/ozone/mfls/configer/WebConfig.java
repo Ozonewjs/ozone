@@ -1,8 +1,11 @@
 package com.ozone.mfls.configer;
 
 import com.ozone.mfls.filter.TokenFilter;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+
 import javax.servlet.DispatcherType;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +17,12 @@ import java.util.List;
  * @Date 2019/5/27 16:55
  * @Version 1.0
  **/
-public class WebConfig {
-    @Bean
-    FilterRegistrationBean tokenFilter() {
-        FilterRegistrationBean filterReg = new FilterRegistrationBean(new TokenFilter());
-        //优先级
-        filterReg.setOrder(70);
-        filterReg.setDispatcherTypes(DispatcherType.REQUEST);
-        //匹配路径
-        List<String> urlPatterns = new ArrayList<>();
-//        urlPatterns.add("/*");
-        filterReg.addUrlPatterns("/*");
-        filterReg.addInitParameter("exclusions","/test,/hello");
-//        filterReg.setUrlPatterns(urlPatterns);
-        System.out.println("====来了");
-        return filterReg;
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 可添加多个，这里选择拦截所有请求地址，进入后判断是否有加注解即可
+        registry.addInterceptor(new TokenFilter()).addPathPatterns("/**");
     }
+
 }

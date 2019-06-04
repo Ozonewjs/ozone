@@ -1,133 +1,80 @@
 package com.ozone.mfls.filter;
 
-import com.alibaba.druid.util.PatternMatcher;
-import com.alibaba.druid.util.ServletPathMatcher;
 
-import javax.servlet.*;
+import com.ozone.mfls.annotation.UserAuthenticate;
+import com.ozone.mfls.beans.HeaderCons;
+import com.ozone.mfls.myexception.FastRuntimeException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.method.HandlerMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * @ClassName TokenFilter
  * @Author Ozone
- * @Description TODO
+ * @Description 拦截器
  * @Date 2019/5/27 16:56
  * @Version 1.0
  **/
-public class TokenFilter implements Filter {
-    public static final String PARAM_NAME_EXCLUSIONS = "exclusions";
-    private Set<String> excludesPattern;
-    protected String contextPath;
-    protected PatternMatcher pathMatcher = new ServletPathMatcher();
-
-    public String getContextPath() {
-        return contextPath;
-    }
-
-    public void setContextPath(String contextPath) {
-        this.contextPath = contextPath;
-    }
-
+public class TokenFilter extends HandlerInterceptorAdapter {
+    private final Logger logger = LoggerFactory.getLogger(TokenFilter.class);
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        String param = filterConfig.getInitParameter(PARAM_NAME_EXCLUSIONS);
-        if (param != null && param.trim().length() != 0) {
-            this.excludesPattern = new HashSet(Arrays.asList(param.split("\\s*,\\s*")));
-        }
-
-    }
-
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest)servletRequest;
-        HttpServletResponse httpResponse = (HttpServletResponse)servletResponse;
-        TokenFilter.StatHttpServletResponseWrapper responseWrapper = new TokenFilter.StatHttpServletResponseWrapper(httpResponse);
-        String requestURI = this.getRequestURI(httpRequest);
-        if (this.isExclusion(requestURI)) {
-            //不过滤走
-            System.out.println("===不进过滤器");
-            filterChain.doFilter(servletRequest, servletResponse);
-        }else {
-            //这里是过滤方法
-            System.out.println("===进了过滤器");
-            filterChain.doFilter(servletRequest,servletResponse);
-        }
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-
-    public boolean isExclusion(String requestURI) {
-        if (this.excludesPattern == null) {
-            return false;
-        } else {
-            if (this.contextPath != null && requestURI.startsWith(this.contextPath)) {
-                requestURI = requestURI.substring(this.contextPath.length());
-                if (!requestURI.startsWith("/")) {
-                    requestURI = "/" + requestURI;
-                }
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
+        logger.info("request请求地址path[{}] uri[{}]", request.getServletPath(),request.getRequestURI());
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Method method = handlerMethod.getMethod();
+        UserAuthenticate userAuthenticate = method.getAnnotation(UserAuthenticate.class);
+        //如果没有加注解则userAuthenticate为null
+        if (Objects.nonNull(userAuthenticate)) {
+            Long userId= getUserId(request);
+            //userAuthenticate.permission()取出permission判断是否需要校验权限
+            boolean checkres = userId == null || (userAuthenticate.permission() && !checkAuth(userId,request.getRequestURI()));
+            if (checkres){
+                throw new FastRuntimeException(20001,"No access");
             }
-
-            Iterator i$ = this.excludesPattern.iterator();
-
-            String pattern;
-            do {
-                if (!i$.hasNext()) {
-                    return false;
-                }
-
-                pattern = (String)i$.next();
-            } while(!this.pathMatcher.matches(pattern, requestURI));
-
-            return true;
         }
+        return true;
     }
 
-    public static final class StatHttpServletResponseWrapper extends HttpServletResponseWrapper implements HttpServletResponse {
-        private int status = 200;
-
-        public StatHttpServletResponseWrapper(HttpServletResponse response) {
-            super(response);
-        }
-
-        @Override
-        public void setStatus(int statusCode) {
-            super.setStatus(statusCode);
-            this.status = statusCode;
-        }
-
-        public void setStatus(int statusCode, String statusMessage) {
-            super.setStatus(statusCode, statusMessage);
-            this.status = statusCode;
-        }
-
-        @Override
-        public void sendError(int statusCode, String statusMessage) throws IOException {
-            super.sendError(statusCode, statusMessage);
-            this.status = statusCode;
-        }
-
-        @Override
-        public void sendError(int statusCode) throws IOException {
-            super.sendError(statusCode);
-            this.status = statusCode;
-        }
-
-        @Override
-        public int getStatus() {
-            return this.status;
-        }
+    /**
+     * 根据token获取用户ID
+     * @param request
+     * @return
+     */
+    private Long getUserId(HttpServletRequest request){
+        //添加业务逻辑根据token获取用户UserId
+        request.getHeader("H-User-Token");
+        Long userId = 1L;
+        String userMobile = "18888888888";
+        request.setAttribute(HeaderCons.USER_ID,userId);
+        request.setAttribute(HeaderCons.USER_MOBILE,userMobile);
+        return userId;
     }
 
-    public String getRequestURI(HttpServletRequest request) {
-        return request.getRequestURI();
+    /**
+     * 校验用户访问权限
+     * @param userId
+     * @param requestURI
+     * @return
+     */
+    private boolean checkAuth(Long userId,String requestURI){
+        //添加业务逻辑根据UserId获取用户的权限组然后校验访问权限
+        return true;
     }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+                           ModelAndView modelAndView) throws Exception {}
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+            throws Exception {}
+
 }

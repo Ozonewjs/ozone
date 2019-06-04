@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @ClassName RedisLockConfiguration
  * @Author Ozone
- * @Description Redis分布式锁
+ * @Description RedisLockRegistry实现Redis分布式锁
  * @Date 2019/5/27 15:36
  * @Version 1.0
  **/
@@ -27,5 +27,9 @@ public class RedisLockConfiguration {
     public RedisLockRegistry redisLockRegistry(RedisConnectionFactory redisConnectionFactory) {
         return new RedisLockRegistry(redisConnectionFactory, "spring-cloud", 5000L);
     }
+//    @Bean
+//    public RedisLockRegistry redisLockRegistry2(RedisConnectionFactory redisConnectionFactory) {
+//        return new RedisLockRegistry(redisConnectionFactory, "spring-fliter", 5000L);
+//    }
 
 }

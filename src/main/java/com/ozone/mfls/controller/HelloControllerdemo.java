@@ -89,14 +89,14 @@ public class HelloControllerdemo {
             TimeUnit.SECONDS.sleep(5);
             boolean b2 = lock.tryLock(3, TimeUnit.SECONDS);
             logger.info("b2 is : "+ b2);
-
+            return "ok";
         }catch (InterruptedException e){
             e.printStackTrace();
         }finally {
             lock.unlock();
             lock.unlock();
         }
-        return "ok";
+        return "error";
     }
 
 }
