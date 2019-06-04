@@ -25,7 +25,7 @@ import java.util.List;
 public class FilterAutoConfiguration {
     @Configuration
     @ConditionalOnWebApplication
-    //多个用逗号隔开
+    /** 多个用逗号隔开**/
     @ConditionalOnClass({UserId.class, UserMobile.class})
     protected static class ArgumentResolverAutoConfiguration implements WebMvcConfigurer  {
         protected ArgumentResolverAutoConfiguration() {
