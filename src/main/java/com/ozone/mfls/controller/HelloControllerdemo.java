@@ -2,6 +2,7 @@ package com.ozone.mfls.controller;
 
 import com.ozone.mfls.beans.RespBean;
 import com.ozone.mfls.beans.SA_USERS;
+import com.ozone.mfls.server.RedisService;
 import com.ozone.mfls.server.UserServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.redis.util.RedisLockRegistry;
@@ -24,10 +25,12 @@ public class HelloControllerdemo {
     private Logger logger = Logger.getLogger(HelloControllerdemo.class);
     private UserServer userServer;
     private RedisLockRegistry redisLockRegistry;
+    private RedisService redisService;
     @Autowired
-    public HelloControllerdemo(UserServer userServer, RedisLockRegistry redisLockRegistry) {
+    public HelloControllerdemo(UserServer userServer, RedisLockRegistry redisLockRegistry,RedisService redisService) {
         this.userServer = userServer;
         this.redisLockRegistry = redisLockRegistry;
+        this.redisService = redisService;
     }
 
     /**
@@ -98,5 +101,18 @@ public class HelloControllerdemo {
         }
         return "error";
     }
-
+    @RequestMapping(value = "/cach",method = RequestMethod.GET)
+    public RespBean cachTest(){
+       boolean res = redisService.set("name","ozone");
+       if (res){
+           return RespBean.ok("插入缓存成功！");
+       }else {
+           return RespBean.error("插入缓存失败！");
+       }
+    }
+    @RequestMapping(value = "/getCach/{key}",method = RequestMethod.GET)
+    public String getCach(@PathVariable String key){
+        String res = redisService.get(key).toString();
+        return res;
+    }
 }
