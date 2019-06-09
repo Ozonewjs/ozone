@@ -41,12 +41,12 @@ public class HelloControllerdemo {
      * @return java.util.List<com.ozone.mfls.beans.SA_USERS>
      **/
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
-    public List<SA_USERS> Hello(){
+    public RespBean Hello(){
         List<SA_USERS> saUsers = userServer.getAll();
         if (saUsers != null && saUsers.size()>0) {
-            return saUsers;
+            return RespBean.ok("查询成功",saUsers);
         }else{
-            return null;
+            return RespBean.error("查询失败");
         }
     }
 

@@ -16,6 +16,9 @@
     <select id="getUser" resultMap="BaseResultMap">
         SELECT * FROM SA_USERS where userid = #{userid}
     </select>
+    <select id="getLoginUser" resultMap="BaseResultMap">
+        SELECT * FROM SA_USERS where userid = #{userid} and password = #{password}
+    </select>
     <insert id="insertUser" parameterType="com.ozone.mfls.beans.SA_USERS">
         insert into sa_users(userid,username,sex,password,status)
         values (#{sausers.userid},#{sausers.username},#{sausers.sex},
